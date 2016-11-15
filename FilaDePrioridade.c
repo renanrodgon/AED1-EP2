@@ -25,9 +25,12 @@ bool exibirLog(PFILA f){
   printf("\n\n");
 }
 
+void testaTamanho(int tam){
+	printf("O tamanho e: %d\n", tam);
+}
+
 int tamanho(PFILA f){
-  /* completar */
-  return 0;
+  return f->elementosNoHeap;
 }
 
 bool inserirElemento(PFILA f, int id, float prioridade){

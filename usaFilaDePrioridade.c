@@ -1,7 +1,13 @@
 #include "FilaDePrioridade.h"
 
 int main() {
-  PFILA f = criarFila(10);
+	//criação fila
+	PFILA f = criarFila(10);
+
+	//teste tamanho
+	/*testaTamanho(tamanho(f));*/
+
+  /*PFILA f = criarFila(10);
   exibirLog(f);
   if(inserirElemento(f, 1, 1)) printf("ok\n");
   else printf("nok (1)\n");
@@ -97,7 +103,7 @@ int main() {
   exibirLog(f);
   if(reduzirPrioridade(f, 4, 1)) printf("ok\n");
   else printf("nok (19) - esperado, elemento com id=4 nao existe\n");
-  exibirLog(f);
+  exibirLog(f);*/
 
 
 
