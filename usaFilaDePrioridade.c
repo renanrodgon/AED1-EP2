@@ -7,6 +7,9 @@ int main() {
 	//teste tamanho
 	/*testaTamanho(tamanho(f));*/
 
+	//teste inserirElemento
+
+
   /*PFILA f = criarFila(10);
   exibirLog(f);
   if(inserirElemento(f, 1, 1)) printf("ok\n");

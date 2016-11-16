@@ -34,7 +34,24 @@ int tamanho(PFILA f){
 }
 
 bool inserirElemento(PFILA f, int id, float prioridade){
-  /* completar */
+  if(id<0 || id>= f->maxRegistros ) return false;//id inválido
+  if(f->arranjo[id]) return false;//já existe um registro com esse id
+  PONT novo = (PONT) malloc(sizeof(PONT));//aloca memória para novo Registro
+  novo->id = id;//atribui valor de id
+  novo->prioridade = prioridade;// atribui valor de prioridade
+  f->arranjo[id] = novo;//arranjo recebe o endereço de novo
+  if(f->elementosNoHeap == 0){// se novo for o primeiro registro do heap
+	  novo->posicao = f->elementosNoHeap;//a posição é definida com valor 0 (primeira posição)
+	  f->heap[novo->posicao] = novo;//heap recebe em seu índice novo na posicao adequada
+	  f->elementosNoHeap++;//o número de elementos no heap é incrementado
+	  return true;
+  }
+  if(f->elementosNoHeap > 0){
+	  novo->posicao = f->elementosNoHeap;
+	  f->heap[novo->posicao] = novo;
+  }
+
+
   return false;
 }
 
