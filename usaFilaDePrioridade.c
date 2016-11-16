@@ -1,16 +1,8 @@
 #include "FilaDePrioridade.h"
 
 int main() {
-	//criação fila
-	PFILA f = criarFila(10);
 
-	//teste tamanho
-	/*testaTamanho(tamanho(f));*/
-
-	//teste inserirElemento
-
-
-  /*PFILA f = criarFila(10);
+	/*PFILA f = criarFila(10);
   exibirLog(f);
   if(inserirElemento(f, 1, 1)) printf("ok\n");
   else printf("nok (1)\n");

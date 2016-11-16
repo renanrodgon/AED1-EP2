@@ -25,12 +25,20 @@ bool exibirLog(PFILA f){
   printf("\n\n");
 }
 
-void testaTamanho(int tam){
-	printf("O tamanho e: %d\n", tam);
-}
-
 int tamanho(PFILA f){
   return f->elementosNoHeap;
+}
+
+int pai(int i){
+	return (i-1)/2;
+}
+
+int esquerda(int i){
+	return 2*i+1;
+}
+
+int direita(int i){
+	return 2*i+2;
 }
 
 bool inserirElemento(PFILA f, int id, float prioridade){
@@ -46,18 +54,46 @@ bool inserirElemento(PFILA f, int id, float prioridade){
 	  f->elementosNoHeap++;//o número de elementos no heap é incrementado
 	  return true;
   }
-  if(f->elementosNoHeap > 0){
+  else{
 	  novo->posicao = f->elementosNoHeap;
 	  f->heap[novo->posicao] = novo;
+	  f->elementosNoHeap++;
   }
-
-
-  return false;
+  //se filho for maior que o pai ele trocarará até que seja menor que um pai ou até se tornar raiz
+  if(novo->prioridade > f->heap[pai(novo->posicao)]->prioridade){
+	  while(novo->posicao != 0 || novo->prioridade > f->heap[pai(novo->posicao)]->prioridade){
+		  int idaux = novo->id;//guardando o id de novo em uma var temp
+		  int prioridadeaux = novo->prioridade;//guardando a prioridade de novo em uma var temp
+		  novo->id = f->heap[pai(novo->posicao)]->id;//o filho recebe o id do pai
+		  novo->prioridade = f->heap[pai(novo->posicao)]->prioridade;//o filho recebe a prioridade do pai
+		  f->heap[pai(novo->posicao)]->id = idaux;//o pai recebe o id do filho
+		  f->heap[pai(novo->posicao)]->prioridade = prioridadeaux;//o pai recebe a prioridade do filho
+		  novo = f->heap[pai(novo->posicao)];// o pai se torna filho e o filho se torna pai
+	  }
+  }
+  return true;
 }
 
 bool aumentarPrioridade(PFILA f, int id, float novaPrioridade){
-  /* completar */
-  return false;
+	if(id<0 || id>= f->maxRegistros ) return false;//id inválido
+	if(f->arranjo[id] == NULL) return false;//se não existe um registro com esse id
+	if(f->arranjo[id]->prioridade >= novaPrioridade) return false;//se a prioridade já maior ou igual a nova
+	f->arranjo[id]->prioridade = novaPrioridade;//nova prioridade recebida
+	if(f->arranjo[id] == f->heap[0]) return true;// se for o primeiro elemento do heap
+	PONT aumentado = f->arranjo[id];
+	//se filho for maior que o pai ele trocarará até que seja menor que um pai ou até se tornar raiz
+	if(aumentado->prioridade > f->heap[pai(aumentado->posicao)]->prioridade){
+		while(aumentado->posicao != 0 || aumentado->prioridade > f->heap[pai(aumentado->posicao)]->prioridade){
+			int idaux = aumentado->id;//guardando o id de novo em uma var temp
+			int prioridadeaux = aumentado->prioridade;//guardando a prioridade de novo em uma var temp
+			aumentado->id = f->heap[pai(aumentado->posicao)]->id;//o filho recebe o id do pai
+			aumentado->prioridade = f->heap[pai(aumentado->posicao)]->prioridade;//o filho recebe a prioridade do pai
+			f->heap[pai(aumentado->posicao)]->id = idaux;//o pai recebe o id do filho
+			f->heap[pai(aumentado->posicao)]->prioridade = prioridadeaux;//o pai recebe a prioridade do filho
+			aumentado = f->heap[pai(aumentado->posicao)];// o pai se torna filho e o filho se torna pai
+		}
+	}
+	return true;
 }
 
 bool reduzirPrioridade(PFILA f, int id, float novaPrioridade){
