@@ -66,9 +66,11 @@ bool inserirElemento(PFILA f, int id, float prioridade){
 		  int prioridadeaux = novo->prioridade;//guardando a prioridade de novo em uma var temp
 		  novo->id = f->heap[pai(novo->posicao)]->id;//o filho recebe o id do pai
 		  novo->prioridade = f->heap[pai(novo->posicao)]->prioridade;//o filho recebe a prioridade do pai
+		  f->arranjo[novo->id] = novo;//ajustando o arranjo para o filho
 		  f->heap[pai(novo->posicao)]->id = idaux;//o pai recebe o id do filho
 		  f->heap[pai(novo->posicao)]->prioridade = prioridadeaux;//o pai recebe a prioridade do filho
 		  novo = f->heap[pai(novo->posicao)];// o pai se torna filho e o filho se torna pai
+		  f->arranjo[novo->id] = novo;// ajustando o arranjo para o pai
 	  }
   }
   return true;
@@ -78,8 +80,12 @@ bool aumentarPrioridade(PFILA f, int id, float novaPrioridade){
 	if(id<0 || id>= f->maxRegistros ) return false;//id inválido
 	if(f->arranjo[id] == NULL) return false;//se não existe um registro com esse id
 	if(f->arranjo[id]->prioridade >= novaPrioridade) return false;//se a prioridade já maior ou igual a nova
+	//printf("prioridade antes: %f\n", f->arranjo[id]->prioridade);
 	f->arranjo[id]->prioridade = novaPrioridade;//nova prioridade recebida
+	//printf("id: %d\n", f->arranjo[id]->id);
+	//printf("prioridade depois: %f\n", f->arranjo[id]->prioridade);
 	if(f->arranjo[id] == f->heap[0]) return true;// se for o primeiro elemento do heap
+	//printf("passou daki\n");
 	PONT aumentado = f->arranjo[id];
 	//se filho for maior que o pai ele trocarará até que seja menor que um pai ou até se tornar raiz
 	if(aumentado->prioridade > f->heap[pai(aumentado->posicao)]->prioridade){
@@ -88,9 +94,11 @@ bool aumentarPrioridade(PFILA f, int id, float novaPrioridade){
 			int prioridadeaux = aumentado->prioridade;//guardando a prioridade de novo em uma var temp
 			aumentado->id = f->heap[pai(aumentado->posicao)]->id;//o filho recebe o id do pai
 			aumentado->prioridade = f->heap[pai(aumentado->posicao)]->prioridade;//o filho recebe a prioridade do pai
+			f->arranjo[aumentado->id] = aumentado;//ajustando o arranjo para o filho
 			f->heap[pai(aumentado->posicao)]->id = idaux;//o pai recebe o id do filho
 			f->heap[pai(aumentado->posicao)]->prioridade = prioridadeaux;//o pai recebe a prioridade do filho
 			aumentado = f->heap[pai(aumentado->posicao)];// o pai se torna filho e o filho se torna pai
+			f->arranjo[aumentado->id] = aumentado;// ajustando o arranjo para o pai
 		}
 	}
 	return true;
