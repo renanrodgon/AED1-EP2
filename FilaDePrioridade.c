@@ -80,12 +80,8 @@ bool aumentarPrioridade(PFILA f, int id, float novaPrioridade){
 	if(id<0 || id>= f->maxRegistros ) return false;//id inválido
 	if(f->arranjo[id] == NULL) return false;//se não existe um registro com esse id
 	if(f->arranjo[id]->prioridade >= novaPrioridade) return false;//se a prioridade já maior ou igual a nova
-	//printf("prioridade antes: %f\n", f->arranjo[id]->prioridade);
 	f->arranjo[id]->prioridade = novaPrioridade;//nova prioridade recebida
-	//printf("id: %d\n", f->arranjo[id]->id);
-	//printf("prioridade depois: %f\n", f->arranjo[id]->prioridade);
 	if(f->arranjo[id] == f->heap[0]) return true;// se for o primeiro elemento do heap
-	//printf("passou daki\n");
 	PONT aumentado = f->arranjo[id];
 	//se filho for maior que o pai ele trocarará até que seja menor que um pai ou até se tornar raiz
 	if(aumentado->prioridade > f->heap[pai(aumentado->posicao)]->prioridade){
@@ -105,8 +101,14 @@ bool aumentarPrioridade(PFILA f, int id, float novaPrioridade){
 }
 
 bool reduzirPrioridade(PFILA f, int id, float novaPrioridade){
-  /* completar */
-  return false;
+	if(id<0 || id>= f->maxRegistros ) return false;//id inválido
+	if(f->arranjo[id] == NULL) return false;//se não existe um registro com esse id
+	if(f->arranjo[id]->prioridade <= novaPrioridade) return false;//se a prioridade já maior ou igual a nova
+	f->arranjo[id]->prioridade = novaPrioridade;//nova prioridade recebida
+	PONT reduzido = f->arranjo[id];// criação de ponteiro para o registro reduzido
+	//teste para saber se o registro reduzido era uma folha do heap
+	if(f->heap[esquerda(reduzido->posicao)] == NULL && f->heap[direita(reduzido->posicao)] == NULL) return true;
+	//falta implementar o teste de quando o pai permanece sendo maior que ambos os filhos
 }
 
 PONT removerElemento(PFILA f){
