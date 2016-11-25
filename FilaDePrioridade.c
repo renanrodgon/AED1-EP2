@@ -25,8 +25,9 @@ bool exibirLog(PFILA f){
   printf("\n\n");
 }
 
-int tamanho(PFILA f){
-  return f->elementosNoHeap;
+int maior(PONT esquerda, PONT direita){
+	if(esquerda->prioridade >= direita->prioridade) return esquerda->posicao;
+	else return direita->posicao;
 }
 
 int pai(int i){
@@ -39,6 +40,10 @@ int esquerda(int i){
 
 int direita(int i){
 	return 2*i+2;
+}
+
+int tamanho(PFILA f){
+  return f->elementosNoHeap;
 }
 
 bool inserirElemento(PFILA f, int id, float prioridade){
@@ -112,7 +117,35 @@ bool reduzirPrioridade(PFILA f, int id, float novaPrioridade){
 }
 
 PONT removerElemento(PFILA f){
-  /* completar */
+  if(f->elementosNoHeap == 0) return NULL;//caso a fila não possua elementos
+  PONT removido = f->heap[0];//raiz removida tem endereço guardado em um ponteiro
+  f->arranjo[removido->id] = NULL;//o elemento é removido do arranjo arranjo
+  if(f->elementosNoHeap == 1){//caso exista apenas um elemento na fila
+	f->heap[0] = NULL;//o elemento é removido do arranjo heap
+	f->elementosNoHeap--;//número de elemento no heap é decrementado
+	return removido;//elemento removido é retornado
+  }
+  PONT realocado = f->heap[f->elementosNoHeap-1];//é criado um ponteiro para o atual último elemento do heap
+  f->heap[0] = realocado;//a raiz do heap recebe o último elemento
+  f->heap[f->elementosNoHeap-1] = NULL;//o lugar onde o último elemento ficava está vazio agora
+  realocado->posicao = 0;//o elemento realocado agora tem sua posição setada para a raiz do heap
+  f->elementosNoHeap--;//número de elemento no heap é decrementado
+  //teste para saber se o registro realocado é uma folha do heap
+  if(f->heap[esquerda(realocado->posicao)] == NULL && f->heap[direita(realocado->posicao)] == NULL) return removido;
+  //teste para saber se o registro realocado é menor que seus filhos
+  if(f->heap[realocado->posicao]->prioridade < f->heap[esquerda(realocado->posicao)]->prioridade || f->heap[realocado->posicao]->prioridade < f->heap[direita(realocado->posicao)]->prioridade){
+	  //esquanto o registro realocado não for folha ou enquanto for menor que seus filhos serão feitas trocas sucessivas
+	  while((f->heap[esquerda(realocado->posicao)] != NULL && f->heap[direita(realocado->posicao)] != NULL)
+			  || (f->heap[realocado->posicao]->prioridade < f->heap[esquerda(realocado->posicao)]->prioridade || f->heap[realocado->posicao]->prioridade < f->heap[direita(realocado->posicao)]->prioridade))
+	  {
+		  int idaux = realocado->id;//guardando o id de realocado em uma var temp
+		  int prioridadeaux = realocado->prioridade;//guardando a prioridade de realocado em uma var temp
+		  int posmaior = maior(f->heap[esquerda(realocado->posicao)], f->heap[direita(realocado->posicao)]);
+		  realocado->id = f->heap[])]->id;//o filho recebe o id do pai
+		  realocado->prioridade = f->heap[pai(realocado->posicao)]->prioridade;//o filho recebe a prioridade do pai
+
+	  }
+  }
   return NULL;
 }
 
