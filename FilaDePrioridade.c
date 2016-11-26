@@ -68,7 +68,7 @@ bool inserirElemento(PFILA f, int id, float prioridade){
   if(novo->prioridade > f->heap[pai(novo->posicao)]->prioridade){
 	  while(novo->posicao != 0 || novo->prioridade > f->heap[pai(novo->posicao)]->prioridade){
 		  int idaux = novo->id;//guardando o id de novo em uma var temp
-		  int prioridadeaux = novo->prioridade;//guardando a prioridade de novo em uma var temp
+		  float prioridadeaux = novo->prioridade;//guardando a prioridade de novo em uma var temp
 		  novo->id = f->heap[pai(novo->posicao)]->id;//o filho recebe o id do pai
 		  novo->prioridade = f->heap[pai(novo->posicao)]->prioridade;//o filho recebe a prioridade do pai
 		  f->arranjo[novo->id] = novo;//ajustando o arranjo para o filho
@@ -92,7 +92,7 @@ bool aumentarPrioridade(PFILA f, int id, float novaPrioridade){
 	if(aumentado->prioridade > f->heap[pai(aumentado->posicao)]->prioridade){
 		while(aumentado->posicao != 0 || aumentado->prioridade > f->heap[pai(aumentado->posicao)]->prioridade){
 			int idaux = aumentado->id;//guardando o id de novo em uma var temp
-			int prioridadeaux = aumentado->prioridade;//guardando a prioridade de novo em uma var temp
+			float prioridadeaux = aumentado->prioridade;//guardando a prioridade de novo em uma var temp
 			aumentado->id = f->heap[pai(aumentado->posicao)]->id;//o filho recebe o id do pai
 			aumentado->prioridade = f->heap[pai(aumentado->posicao)]->prioridade;//o filho recebe a prioridade do pai
 			f->arranjo[aumentado->id] = aumentado;//ajustando o arranjo para o filho
@@ -128,7 +128,7 @@ PONT removerElemento(PFILA f){
   PONT realocado = f->heap[f->elementosNoHeap-1];//é criado um ponteiro para o atual último elemento do heap
   f->heap[0] = realocado;//a raiz do heap recebe o último elemento
   f->heap[f->elementosNoHeap-1] = NULL;//o lugar onde o último elemento ficava está vazio agora
-  /*realocado->posicao = 0;//o elemento realocado agora tem sua posição setada para a raiz do heap
+  realocado->posicao = 0;//o elemento realocado agora tem sua posição setada para a raiz do heap
   f->elementosNoHeap--;//número de elemento no heap é decrementado
   //teste para saber se o registro realocado é uma folha do heap
   if(f->heap[esquerda(realocado->posicao)] == NULL && f->heap[direita(realocado->posicao)] == NULL) return removido;
@@ -139,7 +139,7 @@ PONT removerElemento(PFILA f){
 			  || (f->heap[direita(realocado->posicao)] != NULL && f->heap[realocado->posicao]->prioridade < f->heap[direita(realocado->posicao)]->prioridade))
 	  {
 		  int idaux = realocado->id;//guardando o id de realocado em uma var temp
-		  int prioridadeaux = realocado->prioridade;//guardando a prioridade de realocado em uma var temp
+		  float prioridadeaux = realocado->prioridade;//guardando a prioridade de realocado em uma var temp
 		  int posmaior = maior(f->heap[esquerda(realocado->posicao)], f->heap[direita(realocado->posicao)]);
 		  realocado->id = f->heap[posmaior]->id;//realocado recebe o id do maior
 		  realocado->prioridade = f->heap[posmaior]->prioridade;//realocado recebe o id do maior
@@ -149,7 +149,7 @@ PONT removerElemento(PFILA f){
 		  realocado = f->heap[posmaior];// o realocado se torna o maior e o maior se torna o realocado
 		  f->arranjo[realocado->id] = realocado;// ajustando o arranjo para o maior
 	  }
-  }*/
+  }
   return removido;
 }
 
