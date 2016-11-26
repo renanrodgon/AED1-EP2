@@ -35,12 +35,12 @@ int main() {
   else printf("nok (10) - esperado, elemento com id=4 nao existe\n");
   exibirLog(f);
   
-  /*PONT prioritario;
+  PONT prioritario;
   prioritario = removerElemento(f);
   if (prioritario) printf("Prioritario: %i, %f\n", prioritario->id, prioritario->prioridade);
   else printf("Fila vazia (1)\n");
   exibirLog(f);
-  prioritario = removerElemento(f);
+  /*prioritario = removerElemento(f);
   if (prioritario) printf("Prioritario: %i, %f\n", prioritario->id, prioritario->prioridade);
   else printf("Fila vazia (2)\n");
   exibirLog(f);
