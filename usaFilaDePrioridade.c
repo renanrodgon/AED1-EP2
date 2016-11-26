@@ -34,13 +34,68 @@ int main() {
   if(aumentarPrioridade(f, 4, 4)) printf("ok\n");
   else printf("nok (10) - esperado, elemento com id=4 nao existe\n");
   exibirLog(f);
-  
-  PONT prioritario;
+
+  // COMEÇO MEUS TESTES DE CONSULTAR
+
+  // FIM MEUS TESTES DE CONSULTAR
+
+  // COMEÇO MEUS TESTES DE REDUÇÃO
+
+  /*if(reduzirPrioridade(f, 15, 0)) printf("Esta errado ! Nao deu pq o id e invalido\n");
+  else printf("Esta certo ! Nao deu pq o id e invalido\n");
+  exibirLog(f);
+
+  if(reduzirPrioridade(f, -1, 0)) printf("Esta errado ! Nao deu pq o id e invalido\n");
+  else printf("Esta certo ! Nao deu pq o id e invalido\n");
+  exibirLog(f);
+
+  if(reduzirPrioridade(f, 4, 0)) printf("Esta errado ! nao existe um id como esse no arranjo\n");
+  else printf("Esta certo ! nao existe um id como esse no arranjo\n");
+  exibirLog(f);
+
+  if(reduzirPrioridade(f, 5, 10)) printf("Esta errado ! A prioridade desse id ja e igual a nova prioridade\n");
+  else printf("Esta certo ! A prioridade desse id ja e igual a nova prioridade\n");
+  exibirLog(f);
+
+  if(reduzirPrioridade(f, 5, 11)) printf("Esta errado ! A prioridade desse id e maior que nova prioridade\n");
+  else printf("Esta certo ! A prioridade desse id e maior que nova prioridade\n");
+  exibirLog(f);
+
+  if(reduzirPrioridade(f, 3, 0)) printf("Esta certo ! Era uma folha do heap\n");
+  else printf("Esta errado ! Era uma folha do heap\n");
+  exibirLog(f);
+
+  if(reduzirPrioridade(f, 5, 9)) printf("Esta certo ! Continua maior que os filhos\n");
+  else printf("Esta errado ! Continua maior que os filhos\n");
+  exibirLog(f);
+
+  if(reduzirPrioridade(f, 0, 9)) printf("Esta certo ! Se tornou menor que os filhos, mas nao folha\n");
+  else printf("Esta errado ! Se tornou menor que os filhos, mas nao folha\n");
+  exibirLog(f);
+
+  if(reduzirPrioridade(f, 0, 0)) printf("Esta certo ! Se tornou menor que os filhos, e folha\n");
+  else printf("Esta errado ! Se tornou menor que os filhos, e folha\n");
+  exibirLog(f);
+
+  if(reduzirPrioridade(f, 5, 4)) printf("Esta certo ! Se tornou igual ao filho maior e nao mudou\n");
+  else printf("Esta errado ! Se tornou igual ao filho maior e nao mudou\n");
+  exibirLog(f);
+
+  if(reduzirPrioridade(f, 5, 1)) printf("Esta certo ! Se tornou igual ao filho menor e mudou\n");
+  else printf("Esta errado ! Se tornou igual ao filho menor e mudou\n");
+  exibirLog(f);
+
+  if(aumentarPrioridade(f, 1, 4) && reduzirPrioridade(f, 5, 4)) printf("Esta certo ! Nao deveria mudar pois estao todos iguais\n");
+  else printf("Esta errado ! Nao deveria mudar pois estao todos iguais\n");
+  exibirLog(f);*/
+  // FIM MEUS TESTES DE REDUÇÃO
+
+  /*PONT prioritario;
   prioritario = removerElemento(f);
   if (prioritario) printf("Prioritario: %i, %f\n", prioritario->id, prioritario->prioridade);
   else printf("Fila vazia (1)\n");
   exibirLog(f);
-  /*prioritario = removerElemento(f);
+  prioritario = removerElemento(f);
   if (prioritario) printf("Prioritario: %i, %f\n", prioritario->id, prioritario->prioridade);
   else printf("Fila vazia (2)\n");
   exibirLog(f);
