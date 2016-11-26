@@ -37,6 +37,20 @@ int main() {
 
   // COMEÇO MEUS TESTES DE CONSULTAR
 
+  /*float resposta = 0;
+
+  if(consultarPrioridade(f, 15, &resposta)) printf("Esta errado! Nao deu pq o id e invalido\n");
+  else printf("Esta certo! Nao deu pq o id e invalido\n");
+
+  if(consultarPrioridade(f, -1, &resposta)) printf("Esta errado! Nao deu pq o id e invalido\n");
+  else printf("Esta certo! Nao deu pq o id e invalido\n");
+
+  if(consultarPrioridade(f, 4, &resposta)) printf("Esta errado! nao existe um id como esse no arranjo\n");
+  else printf("Esta certo! nao existe um id como esse no arranjo\n");
+
+  if(consultarPrioridade(f, 5, &resposta)) printf("Esta Certo! e a prioridade e: %f\n", resposta);
+  else printf("Esta Errado! e a prioridade e: %f\n", resposta);*/
+
   // FIM MEUS TESTES DE CONSULTAR
 
   // COMEÇO MEUS TESTES DE REDUÇÃO
