@@ -25,8 +25,28 @@ bool exibirLog(PFILA f){
   printf("\n\n");
 }
 
-int tamanho(PFILA f){
-  return f->elementosNoHeap;
+int maior(PONT esquerda, PONT direita){
+	if(esquerda->prioridade >= direita->prioridade) return esquerda->posicao;
+	else return direita->posicao;
+}
+
+int testaposmaior(PONT esquerda, PONT direita, PONT pai){
+	  if(esquerda != NULL && direita == NULL){
+		  if(pai->prioridade < esquerda->prioridade){
+			  return esquerda->posicao;
+		  }
+	  }
+	  if(esquerda == NULL && direita != NULL){
+		  if(pai->prioridade < direita->prioridade){
+			  return direita->posicao;
+		  }
+	  }
+	  if(esquerda != NULL && direita != NULL){
+		  if((pai->prioridade < esquerda->prioridade) || (pai->prioridade < direita->prioridade)){
+			  return maior(esquerda, direita);
+		  }
+	  }
+	  return -1;
 }
 
 int pai(int i){
@@ -39,6 +59,10 @@ int esquerda(int i){
 
 int direita(int i){
 	return 2*i+2;
+}
+
+int tamanho(PFILA f){
+  return f->elementosNoHeap;
 }
 
 bool inserirElemento(PFILA f, int id, float prioridade){
@@ -63,7 +87,7 @@ bool inserirElemento(PFILA f, int id, float prioridade){
   if(novo->prioridade > f->heap[pai(novo->posicao)]->prioridade){
 	  while(novo->posicao != 0 || novo->prioridade > f->heap[pai(novo->posicao)]->prioridade){
 		  int idaux = novo->id;//guardando o id de novo em uma var temp
-		  int prioridadeaux = novo->prioridade;//guardando a prioridade de novo em uma var temp
+		  float prioridadeaux = novo->prioridade;//guardando a prioridade de novo em uma var temp
 		  novo->id = f->heap[pai(novo->posicao)]->id;//o filho recebe o id do pai
 		  novo->prioridade = f->heap[pai(novo->posicao)]->prioridade;//o filho recebe a prioridade do pai
 		  f->arranjo[novo->id] = novo;//ajustando o arranjo para o filho
@@ -87,7 +111,7 @@ bool aumentarPrioridade(PFILA f, int id, float novaPrioridade){
 	if(aumentado->prioridade > f->heap[pai(aumentado->posicao)]->prioridade){
 		while(aumentado->posicao != 0 || aumentado->prioridade > f->heap[pai(aumentado->posicao)]->prioridade){
 			int idaux = aumentado->id;//guardando o id de novo em uma var temp
-			int prioridadeaux = aumentado->prioridade;//guardando a prioridade de novo em uma var temp
+			float prioridadeaux = aumentado->prioridade;//guardando a prioridade de novo em uma var temp
 			aumentado->id = f->heap[pai(aumentado->posicao)]->id;//o filho recebe o id do pai
 			aumentado->prioridade = f->heap[pai(aumentado->posicao)]->prioridade;//o filho recebe a prioridade do pai
 			f->arranjo[aumentado->id] = aumentado;//ajustando o arranjo para o filho
@@ -108,16 +132,70 @@ bool reduzirPrioridade(PFILA f, int id, float novaPrioridade){
 	PONT reduzido = f->arranjo[id];// criação de ponteiro para o registro reduzido
 	//teste para saber se o registro reduzido era uma folha do heap
 	if(f->heap[esquerda(reduzido->posicao)] == NULL && f->heap[direita(reduzido->posicao)] == NULL) return true;
-	//falta implementar o teste de quando o pai permanece sendo maior que ambos os filhos
+	//teste para saber se os filhos de reduzido são maiores do que ele
+	if(f->heap[reduzido->posicao]->prioridade < f->heap[esquerda(reduzido->posicao)]->prioridade || f->heap[reduzido->posicao]->prioridade < f->heap[direita(reduzido->posicao)]->prioridade){
+		//sendo maiores esse while determinara qual dos dois lados deve trocar com reduzido
+		  while((f->heap[esquerda(reduzido->posicao)] != NULL && f->heap[reduzido->posicao]->prioridade < f->heap[esquerda(reduzido->posicao)]->prioridade)
+				  || (f->heap[direita(reduzido->posicao)] != NULL && f->heap[reduzido->posicao]->prioridade < f->heap[direita(reduzido->posicao)]->prioridade))
+		  {
+			  int idaux = reduzido->id;//guardando o id de reduzido em uma var temp
+			  float prioridadeaux = reduzido->prioridade;//guardando a prioridade de reduzido em uma var temp
+			  int posmaior = maior(f->heap[esquerda(reduzido->posicao)], f->heap[direita(reduzido->posicao)]);
+			  reduzido->id = f->heap[posmaior]->id;//reduzido recebe o id do maior
+			  reduzido->prioridade = f->heap[posmaior]->prioridade;//reduzido recebe o id do maior
+			  f->arranjo[reduzido->id] = reduzido;//ajustando o arranjo para o reduzido
+			  f->heap[posmaior]->id = idaux;//o maior recebe o id de reduzido
+			  f->heap[posmaior]->prioridade = prioridadeaux;//o maior recebe a prioridade de reduzido
+			  reduzido = f->heap[posmaior];// o reduzido se torna o maior e o maior se torna o reduzido
+			  f->arranjo[reduzido->id] = reduzido;// ajustando o arranjo para o maior
+		  }
+	}
+	return true;
 }
 
 PONT removerElemento(PFILA f){
-  /* completar */
-  return NULL;
+  if(f->elementosNoHeap == 0) return NULL;//caso a fila não possua elementos
+  PONT removido = f->heap[0];//raiz removida tem endereço guardado em um ponteiro
+  f->arranjo[removido->id] = NULL;//o elemento é removido do arranjo arranjo
+  if(f->elementosNoHeap == 1){//caso exista apenas um elemento na fila
+	f->heap[0] = NULL;//o elemento é removido do arranjo heap
+	f->elementosNoHeap--;//número de elemento no heap é decrementado
+	return removido;//elemento removido é retornado
+  }
+  PONT realocado = f->heap[f->elementosNoHeap-1];//é criado um ponteiro para o atual último elemento do heap
+  f->heap[0] = realocado;//a raiz do heap recebe o último elemento
+  f->heap[f->elementosNoHeap-1] = NULL;//o lugar onde o último elemento ficava está vazio agora
+  realocado->posicao = 0;//o elemento realocado agora tem sua posição setada para a raiz do heap
+  f->elementosNoHeap--;//número de elemento no heap é decrementado
+  //teste para saber se o registro realocado é uma folha do heap
+  if(f->heap[esquerda(realocado->posicao)] == NULL && f->heap[direita(realocado->posicao)] == NULL) return removido;
+
+  int posmaior = testaposmaior(f->heap[esquerda(realocado->posicao)], f->heap[direita(realocado->posicao)], f->heap[realocado->posicao]);
+
+  if((f->heap[esquerda(realocado->posicao)] != NULL || f->heap[direita(realocado->posicao)] != NULL) && (posmaior>-1)){
+	  //esquanto o registro realocado não for folha ou enquanto for menor que seus filhos serão feitas trocas sucessivas
+	  while((f->heap[esquerda(realocado->posicao)] != NULL && f->heap[realocado->posicao]->prioridade < f->heap[esquerda(realocado->posicao)]->prioridade)
+			  || (f->heap[direita(realocado->posicao)] != NULL && f->heap[realocado->posicao]->prioridade < f->heap[direita(realocado->posicao)]->prioridade))
+	  {
+		  int idaux = realocado->id;//guardando o id de realocado em uma var temp
+		  float prioridadeaux = realocado->prioridade;//guardando a prioridade de realocado em uma var temp
+		  posmaior = testaposmaior(f->heap[esquerda(realocado->posicao)], f->heap[direita(realocado->posicao)], f->heap[realocado->posicao]);
+		  realocado->id = f->heap[posmaior]->id;//realocado recebe o id do maior
+		  realocado->prioridade = f->heap[posmaior]->prioridade;//realocado recebe o id do maior
+		  f->arranjo[realocado->id] = realocado;//ajustando o arranjo para o realocado
+		  f->heap[posmaior]->id = idaux;//o maior recebe o id de realocado
+		  f->heap[posmaior]->prioridade = prioridadeaux;//o maior recebe a prioridade de realocado
+		  realocado = f->heap[posmaior];// o realocado se torna o maior e o maior se torna o realocado
+		  f->arranjo[realocado->id] = realocado;// ajustando o arranjo para o maior
+	  }
+  }
+  return removido;
 }
 
 bool consultarPrioridade(PFILA f, int id, float* resposta){
-  /* completar */
-  return false;
+	if(id<0 || id>= f->maxRegistros ) return false;//id inválido
+	if(f->arranjo[id] == NULL) return false;//se não existe um registro com esse id
+	*resposta = f->arranjo[id]->prioridade;
+	return true;
 }
 
