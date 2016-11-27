@@ -30,6 +30,25 @@ int maior(PONT esquerda, PONT direita){
 	else return direita->posicao;
 }
 
+int testaposmaior(PONT esquerda, PONT direita, PONT pai){
+	  if(esquerda != NULL && direita == NULL){
+		  if(pai->prioridade < esquerda->prioridade){
+			  return esquerda->posicao;
+		  }
+	  }
+	  if(esquerda == NULL && direita != NULL){
+		  if(pai->prioridade < direita->prioridade){
+			  return direita->posicao;
+		  }
+	  }
+	  if(esquerda != NULL && direita != NULL){
+		  if((pai->prioridade < esquerda->prioridade) || (pai->prioridade < direita->prioridade)){
+			  return maior(esquerda, direita);
+		  }
+	  }
+	  return -1;
+}
+
 int pai(int i){
 	return (i-1)/2;
 }
@@ -150,15 +169,17 @@ PONT removerElemento(PFILA f){
   f->elementosNoHeap--;//número de elemento no heap é decrementado
   //teste para saber se o registro realocado é uma folha do heap
   if(f->heap[esquerda(realocado->posicao)] == NULL && f->heap[direita(realocado->posicao)] == NULL) return removido;
-  //teste para saber se o registro realocado é menor que seus filhos
-  if(f->heap[realocado->posicao]->prioridade < f->heap[esquerda(realocado->posicao)]->prioridade || f->heap[realocado->posicao]->prioridade < f->heap[direita(realocado->posicao)]->prioridade){
+
+  int posmaior = testaposmaior(f->heap[esquerda(realocado->posicao)], f->heap[direita(realocado->posicao)], f->heap[realocado->posicao]);
+
+  if((f->heap[esquerda(realocado->posicao)] != NULL || f->heap[direita(realocado->posicao)] != NULL) && (posmaior>-1)){
 	  //esquanto o registro realocado não for folha ou enquanto for menor que seus filhos serão feitas trocas sucessivas
 	  while((f->heap[esquerda(realocado->posicao)] != NULL && f->heap[realocado->posicao]->prioridade < f->heap[esquerda(realocado->posicao)]->prioridade)
 			  || (f->heap[direita(realocado->posicao)] != NULL && f->heap[realocado->posicao]->prioridade < f->heap[direita(realocado->posicao)]->prioridade))
 	  {
 		  int idaux = realocado->id;//guardando o id de realocado em uma var temp
 		  float prioridadeaux = realocado->prioridade;//guardando a prioridade de realocado em uma var temp
-		  int posmaior = maior(f->heap[esquerda(realocado->posicao)], f->heap[direita(realocado->posicao)]);
+		  posmaior = testaposmaior(f->heap[esquerda(realocado->posicao)], f->heap[direita(realocado->posicao)], f->heap[realocado->posicao]);
 		  realocado->id = f->heap[posmaior]->id;//realocado recebe o id do maior
 		  realocado->prioridade = f->heap[posmaior]->prioridade;//realocado recebe o id do maior
 		  f->arranjo[realocado->id] = realocado;//ajustando o arranjo para o realocado
